@@ -17,7 +17,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.enzo</groupId>
+            <groupId>com.atguigu</groupId>
             <artifactId>realtime-common</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>provided</scope>
