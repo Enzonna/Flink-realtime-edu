@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/../../23-电商实时数仓5.0/fastfood-realtime/gmall0318-publisher/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../23-电商实时数仓5.0/fastfood-realtime/gmall0318-publisher/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gmall-publisher/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gmall-publisher/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/realtime-common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/realtime-common/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/realtime-dim/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/realtime-dim/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/realtime-dwd/realtime-dwd-base-log/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/realtime-dwd/realtime-dwd-base-log/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/realtime-dwd/realtime-dwd-learning-log/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/realtime-dwd/realtime-dwd-learning-log/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/realtime-dwd/realtime-dwd-traffic-detail/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/realtime-dwd/realtime-dwd-traffic-detail/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/realtime-dwd/realtime-dwd-traffic-log/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/realtime-dwd/realtime-dwd-traffic-log/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/realtime-dwd/realtime-dwd-traffic-out-log/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/realtime-dwd/realtime-dwd-traffic-out-log/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/realtime-dwd/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/realtime-dwd/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/realtime-dws/realtime-dwd-traffic-page/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/realtime-dws/realtime-dwd-traffic-page/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/realtime-dws/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/realtime-dws/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>

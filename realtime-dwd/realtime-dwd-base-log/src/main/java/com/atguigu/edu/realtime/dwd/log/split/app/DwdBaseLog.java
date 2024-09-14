@@ -29,6 +29,7 @@ public class DwdBaseLog extends BaseApp {
     private final String DISPLAY = "display";
     private final String ACTION = "action";
     private final String PAGE = "page";
+    private final String VIDEO = "video";
 
     public static void main(String[] args) {
         new DwdBaseLog().start(10012, 4, "dwd_base_log", "topic_log");
@@ -48,7 +49,7 @@ public class DwdBaseLog extends BaseApp {
         // TODO 3. Splitting, putting different types of logs into different streams
         Map<String, DataStream> streamMap = splitStream(fixedDS);
 
-        // TODO 4. Write different data to the topic of Kafka
+//        // TODO 4. Write different data to the topic of Kafka
         writeToKafka(streamMap);
     }
 
@@ -69,6 +70,9 @@ public class DwdBaseLog extends BaseApp {
         streamMap
                 .get(ACTION)
                 .sinkTo(FlinkSinkUtil.getKafkaSink(Constant.TOPIC_DWD_TRAFFIC_ACTION));
+        streamMap
+                .get(VIDEO)
+                .sinkTo(FlinkSinkUtil.getKafkaSink(Constant.TOPIC_DWD_TRAFFIC_VIDEO));
     }
 
     private Map<String, DataStream> splitStream(SingleOutputStreamOperator<JSONObject> fixedDS) {
@@ -79,6 +83,8 @@ public class DwdBaseLog extends BaseApp {
         OutputTag<String> displayTag = new OutputTag<String>("displayTag") {
         };
         OutputTag<String> actionTag = new OutputTag<String>("actionTag") {
+        };
+        OutputTag<String> appVideoTag = new OutputTag<String>("videoTag") {
         };
         SingleOutputStreamOperator<String> pageDS = fixedDS.process(
                 new ProcessFunction<JSONObject, String>() {
@@ -94,40 +100,42 @@ public class DwdBaseLog extends BaseApp {
                         if (startJsonObj != null) {
                             ctx.output(startTag, jsonObj.toJSONString());
                         } else {
-                            JSONObject commonJsonObj = jsonObj.getJSONObject("common");
-                            JSONObject pageJsonObj = jsonObj.getJSONObject("page");
                             Long ts = jsonObj.getLong("ts");
-
-                            JSONArray displaysArr = jsonObj.getJSONArray("displays");
-                            if (displaysArr != null && displaysArr.size() > 0) {
-                                for (int i = 0; i < displaysArr.size(); i++) {
-                                    JSONObject displayJsonObj = displaysArr.getJSONObject(i);
-                                    JSONObject newDisplayJsonObj = new JSONObject();
-                                    newDisplayJsonObj.put("common", commonJsonObj);
-                                    newDisplayJsonObj.put("page", pageJsonObj);
-                                    newDisplayJsonObj.put("ts", ts);
-                                    newDisplayJsonObj.put("display", displayJsonObj);
-                                    ctx.output(displayTag, newDisplayJsonObj.toJSONString());
+                            JSONObject commonJsonObj = jsonObj.getJSONObject("common");
+                            JSONObject appVideo = jsonObj.getJSONObject("appVideo");
+                            if (appVideo != null) {
+                                ctx.output(appVideoTag, jsonObj.toJSONString());
+                            } else {
+                                JSONObject pageJsonObj = jsonObj.getJSONObject("page");
+                                JSONArray displaysArr = jsonObj.getJSONArray("displays");
+                                if (displaysArr != null && displaysArr.size() > 0) {
+                                    for (int i = 0; i < displaysArr.size(); i++) {
+                                        JSONObject displayJsonObj = displaysArr.getJSONObject(i);
+                                        JSONObject newDisplayJsonObj = new JSONObject();
+                                        newDisplayJsonObj.put("common", commonJsonObj);
+                                        newDisplayJsonObj.put("page", pageJsonObj);
+                                        newDisplayJsonObj.put("ts", ts);
+                                        newDisplayJsonObj.put("display", displayJsonObj);
+                                        ctx.output(displayTag, newDisplayJsonObj.toJSONString());
+                                    }
+                                    jsonObj.remove("displays");
                                 }
-                                jsonObj.remove("displays");
-                            }
 
-
-                            JSONArray actionsArr = jsonObj.getJSONArray("actions");
-                            if (actionsArr != null && actionsArr.size() > 0) {
-                                for (int i = 0; i < actionsArr.size(); i++) {
-                                    JSONObject actionJsonObj = actionsArr.getJSONObject(i);
-                                    JSONObject newActionJsonObj = new JSONObject();
-                                    newActionJsonObj.put("common", commonJsonObj);
-                                    newActionJsonObj.put("page", pageJsonObj);
-                                    newActionJsonObj.put("action", actionJsonObj);
-                                    ctx.output(actionTag, newActionJsonObj.toJSONString());
+                                JSONArray actionsArr = jsonObj.getJSONArray("actions");
+                                if (actionsArr != null && actionsArr.size() > 0) {
+                                    for (int i = 0; i < actionsArr.size(); i++) {
+                                        JSONObject actionJsonObj = actionsArr.getJSONObject(i);
+                                        JSONObject newActionJsonObj = new JSONObject();
+                                        newActionJsonObj.put("common", commonJsonObj);
+                                        newActionJsonObj.put("page", pageJsonObj);
+                                        newActionJsonObj.put("action", actionJsonObj);
+                                        ctx.output(actionTag, newActionJsonObj.toJSONString());
+                                    }
+                                    jsonObj.remove("actions");
                                 }
-                                jsonObj.remove("actions");
+
+                                out.collect(jsonObj.toJSONString());
                             }
-
-
-                            out.collect(jsonObj.toJSONString());
 
                         }
                     }
@@ -137,6 +145,8 @@ public class DwdBaseLog extends BaseApp {
         SideOutputDataStream<String> startDS = pageDS.getSideOutput(startTag);
         SideOutputDataStream<String> displayDS = pageDS.getSideOutput(displayTag);
         SideOutputDataStream<String> actionDS = pageDS.getSideOutput(actionTag);
+        SideOutputDataStream<String> videoDS = pageDS.getSideOutput(appVideoTag);
+
 
 
         errDS.print("err--:✅");
@@ -144,6 +154,7 @@ public class DwdBaseLog extends BaseApp {
         startDS.print("start--:✅");
         displayDS.print("display--:✅");
         actionDS.print("action--:✅");
+        videoDS.print("video--:✅");
 
         Map<String, DataStream> splitMap = new HashMap<>();
         splitMap.put("err", errDS);
@@ -151,6 +162,8 @@ public class DwdBaseLog extends BaseApp {
         splitMap.put("display", displayDS);
         splitMap.put("action", actionDS);
         splitMap.put("page", pageDS);
+        splitMap.put("video", videoDS);
+
 
         return splitMap;
     }

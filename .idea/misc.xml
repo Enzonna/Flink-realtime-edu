@@ -5,7 +5,14 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/gmall-publisher/pom.xml" />
+        <option value="$PROJECT_DIR$/../../23-电商实时数仓5.0/fastfood-realtime/gmall0318-publisher/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/realtime-dwd/realtime-dwd-traffic-detail/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8 (2)" project-jdk-type="JavaSDK">

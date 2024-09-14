@@ -12,6 +12,7 @@
         <module>realtime-common</module>
         <module>realtime-dim</module>
         <module>realtime-dwd</module>
+        <module>realtime-dws</module>
     </modules>
 
     <properties>

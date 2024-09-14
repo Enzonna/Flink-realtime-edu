@@ -30,6 +30,7 @@ public abstract class BaseApp {
         // TODO 2. 检查点
         // 2.1 开启检查点
         env.enableCheckpointing(5000L, CheckpointingMode.EXACTLY_ONCE);
+        env.disableOperatorChaining();
 
 
 //        CheckpointConfig checkpointConfig = env.getCheckpointConfig();
@@ -61,6 +62,7 @@ public abstract class BaseApp {
         // 3.3 消费数据，封装成流
         DataStreamSource<String> kafkaStrDS =
                 env.fromSource(kafkaSource, WatermarkStrategy.noWatermarks(), "Kafka_source");
+        kafkaStrDS.rebalance();
 
         // 4. Business logic processing
         handle(env, kafkaStrDS);
